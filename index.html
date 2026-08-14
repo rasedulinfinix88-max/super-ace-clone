@@ -9,12 +9,13 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            user-select: none;
         }
 
         body {
-            background: radial-gradient(circle, #2b0836 0%, #0d0214 100%);
+            background: radial-gradient(circle, #2a083b 0%, #090112 100%);
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,145 +24,187 @@
             padding: 10px;
         }
 
-        /* Top Header & Multiplier Bar */
-        .header-title {
+        /* Title */
+        .title {
             color: #ffd700;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 900;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
             margin-bottom: 8px;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
+        /* Multiplier Bar Header */
         .multiplier-bar {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             width: 100%;
             max-width: 380px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             border: 2px solid #ffd700;
-            border-radius: 25px;
-            padding: 5px 15px;
-            margin-bottom: 12px;
+            border-radius: 20px;
+            padding: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
         .multi-step {
-            font-size: 14px;
-            font-weight: bold;
-            color: #888;
-            padding: 3px 8px;
+            font-size: 15px;
+            font-weight: 800;
+            color: #777;
+            padding: 4px 14px;
             border-radius: 12px;
+            transition: all 0.3s;
         }
 
         .multi-step.active {
             color: #fff;
             background: linear-gradient(180deg, #ff416c, #ff4b2b);
-            box-shadow: 0 0 8px #ff4b2b;
+            box-shadow: 0 0 10px #ff4b2b;
+            transform: scale(1.1);
         }
 
         /* 5x4 Grid Frame */
         .slot-frame {
-            background: linear-gradient(180deg, #4a00e0, #8e2de2);
+            background: linear-gradient(180deg, #5100ad, #21004a);
             padding: 8px;
             border-radius: 16px;
             border: 3px solid #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 25px rgba(186, 85, 211, 0.6);
             width: 100%;
             max-width: 380px;
         }
 
-        .slot-container {
+        .slot-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 5px;
-            background: #120224;
+            background: #0d001d;
             padding: 8px;
             border-radius: 10px;
+            position: relative;
         }
 
         /* Card Visual Styling */
         .card {
-            background: linear-gradient(145deg, #1f1a3a, #0d0a22);
-            border: 2px solid #4a3e7d;
+            background: linear-gradient(145deg, #2a2250, #130f2a);
+            border: 2px solid #554488;
             border-radius: 8px;
-            height: 70px;
+            height: 68px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-size: 22px;
             font-weight: 900;
-            color: #fff;
+            color: #e2e2e2;
             position: relative;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
-            transition: transform 0.2s;
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.8);
+            transition: transform 0.2s, opacity 0.3s;
         }
 
-        /* Special Super Ace Card Types */
-        .card.golden-card {
-            background: linear-gradient(145deg, #ffe066, #f5a623);
+        /* Special Super Ace Card Styles */
+        .card.golden {
+            background: linear-gradient(145deg, #fff099, #f5a623);
             border: 2px solid #ffffff;
             color: #000;
-            box-shadow: 0 0 10px #ffe066;
+            box-shadow: 0 0 12px #ffe066;
         }
 
-        .card.wild-card {
+        .card.wild {
             background: linear-gradient(145deg, #ff0844, #ffb199);
             border: 2px solid #fff;
             color: #fff;
             text-shadow: 0 0 5px #000;
-            box-shadow: 0 0 12px #ff0844;
+            box-shadow: 0 0 15px #ff0844;
         }
 
-        .card.win-anim {
-            animation: pulse 0.5s infinite alternate;
+        .card.exploding {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        .card.win-highlight {
             border-color: #00ff88;
+            box-shadow: 0 0 15px #00ff88;
+            animation: pulse 0.4s infinite alternate;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 5px #00ff88; }
-            100% { transform: scale(1.05); box-shadow: 0 0 15px #00ff88; }
+            0% { transform: scale(0.95); }
+            100% { transform: scale(1.05); }
         }
 
-        /* Bottom Controls */
+        /* Dashboard Stats */
         .dashboard {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             width: 100%;
             max-width: 380px;
             margin-top: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px;
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid #332255;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #aaa;
+            text-transform: uppercase;
         }
 
         .stat-val {
             color: #00ff88;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 18px;
+        }
+
+        /* Spin Button */
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 380px;
         }
 
         .spin-btn {
-            margin-top: 12px;
             background: linear-gradient(180deg, #ffd700, #ff8c00);
             color: #000;
             border: none;
-            padding: 12px 50px;
+            padding: 14px 60px;
             font-size: 22px;
             font-weight: 900;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.6);
+            border-radius: 35px;
+            box-shadow: 0 5px 20px rgba(255, 140, 0, 0.6);
             cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .spin-btn:active {
             transform: scale(0.95);
         }
+
+        .spin-btn:disabled {
+            background: #555;
+            box-shadow: none;
+            color: #888;
+        }
+
+        .status-msg {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #ffd700;
+            font-weight: bold;
+            min-height: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="header-title">SUPER ACE</div>
+    <div class="title">SUPER ACE</div>
 
     <!-- Multiplier Bar -->
     <div class="multiplier-bar">
@@ -171,73 +214,236 @@
         <div class="multi-step" id="m5">x5</div>
     </div>
 
-    <!-- Slot Main Frame -->
+    <!-- Main Grid Slot Frame -->
     <div class="slot-frame">
-        <div class="slot-container" id="slotGrid"></div>
+        <div class="slot-grid" id="slotGrid"></div>
     </div>
 
-    <!-- Stats -->
+    <!-- Stats Dashboard -->
     <div class="dashboard">
-        <div>পয়েন্ট: <span class="stat-val" id="score">1000</span></div>
-        <div>জিতলেন: <span class="stat-val" id="win">0</span></div>
+        <div>
+            <div class="stat-label">মোট পয়েন্ট</div>
+            <div class="stat-val" id="totalPoints">1000</div>
+        </div>
+        <div>
+            <div class="stat-label">শেষ জয়</div>
+            <div class="stat-val" id="lastWin">0</div>
+        </div>
     </div>
 
-    <button class="spin-btn" onclick="spin()">SPIN</button>
+    <!-- Spin Control -->
+    <div class="controls">
+        <button class="spin-btn" id="spinBtn" onclick="startSpin()">SPIN</button>
+        <div class="status-msg" id="statusMsg">স্পিন করতে ক্লিক করুন!</div>
+    </div>
 
     <script>
-        const symbols = ['J', 'Q', 'K', 'A'];
-        const grid = document.getElementById('slotGrid');
+        const baseSymbols = ['J', 'Q', 'K', 'A', '♠', '♥'];
+        const multipliers = [1, 2, 3, 5];
+        let currentMultiIdx = 0;
         let totalScore = 1000;
+        let isSpinning = false;
 
-        function init() {
-            grid.innerHTML = '';
-            for(let i=0; i<20; i++) {
+        // Grid Data Array (5 cols x 4 rows = 20 cells)
+        let gridState = []; 
+
+        const gridContainer = document.getElementById('slotGrid');
+        const spinBtn = document.getElementById('spinBtn');
+        const statusMsg = document.getElementById('statusMsg');
+
+        // Initialize Blank Grid
+        function initGrid() {
+            gridContainer.innerHTML = '';
+            gridState = [];
+            for (let i = 0; i < 20; i++) {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerText = symbols[Math.floor(Math.random()*symbols.length)];
-                grid.appendChild(card);
-            }
-        }
-
-        function spin() {
-            const cards = document.querySelectorAll('.card');
-            let winVal = 0;
-
-            cards.forEach(card => {
-                card.classList.remove('golden-card', 'wild-card', 'win-anim');
                 
-                const rand = Math.random();
-                if(rand < 0.1) {
-                    // 10% Chance Wild Card
-                    card.innerText = 'WILD';
-                    card.classList.add('wild-card');
-                } else if(rand < 0.25) {
-                    // 15% Chance Golden Card
-                    card.innerText = symbols[Math.floor(Math.random()*symbols.length)];
-                    card.classList.add('golden-card');
-                } else {
-                    card.innerText = symbols[Math.floor(Math.random()*symbols.length)];
-                }
-            });
+                const symData = getRandomSymbol();
+                applySymbolToCard(card, symData);
 
-            // Random Win Simulation
-            if(Math.random() > 0.5) {
-                winVal = Math.floor(Math.random()*100) + 20;
-                totalScore += winVal;
-                document.getElementById('m2').classList.add('active');
-                cards[0].classList.add('win-anim');
-                cards[1].classList.add('win-anim');
-                cards[2].classList.add('win-anim');
-            } else {
-                document.getElementById('m2').classList.remove('active');
+                gridContainer.appendChild(card);
+                gridState.push({ element: card, type: symData.type, value: symData.val });
             }
-
-            document.getElementById('score').innerText = totalScore;
-            document.getElementById('win').innerText = winVal;
         }
 
-        init();
+        // Helper: Get Random Symbol Object
+        function getRandomSymbol() {
+            const rand = Math.random();
+            if (rand < 0.08) {
+                return { type: 'wild', val: 'WILD' };
+            } else if (rand < 0.25) {
+                const val = baseSymbols[Math.floor(Math.random() * baseSymbols.length)];
+                return { type: 'golden', val: val };
+            } else {
+                const val = baseSymbols[Math.floor(Math.random() * baseSymbols.length)];
+                return { type: 'normal', val: val };
+            }
+        }
+
+        // Helper: Apply Styles
+        function applySymbolToCard(card, symData) {
+            card.innerText = symData.val;
+            card.className = 'card';
+            if (symData.type === 'golden') card.classList.add('golden');
+            if (symData.type === 'wild') card.classList.add('wild');
+        }
+
+        // Set Multiplier Light
+        function setMultiplier(idx) {
+            currentMultiIdx = Math.min(idx, 3);
+            for (let i = 1; i <= 4; i++) {
+                const el = document.getElementById('m' + (i === 4 ? 5 : i));
+                if (i - 1 === currentMultiIdx) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            }
+        }
+
+        // Main Spin Action
+        async function startSpin() {
+            if (isSpinning) return;
+            isSpinning = true;
+            spinBtn.disabled = true;
+            statusMsg.innerText = 'স্পিন হচ্ছে...';
+            
+            // Reset Multiplier
+            setMultiplier(0);
+            document.getElementById('lastWin').innerText = '0';
+
+            // Generate New Symbols
+            for (let i = 0; i < 20; i++) {
+                const symData = getRandomSymbol();
+                gridState[i].type = symData.type;
+                gridState[i].value = symData.val;
+                applySymbolToCard(gridState[i].element, symData);
+            }
+
+            // Start Cascade Cycle
+            let totalSpinWin = 0;
+            let comboCount = 0;
+
+            while (true) {
+                let winIndices = checkMatches();
+                if (winIndices.length === 0) break;
+
+                // Win Found
+                comboCount++;
+                setMultiplier(comboCount - 1);
+                const currentMulti = multipliers[currentMultiIdx];
+
+                statusMsg.innerText = `ম্যাচ হয়েছে! Multiplier ${currentMulti}x`;
+
+                // Highlight Winners
+                winIndices.forEach(idx => gridState[idx].element.classList.add('win-highlight'));
+                await sleep(500);
+
+                // Calculate Win
+                let roundWin = winIndices.length * 20 * currentMulti;
+                totalSpinWin += roundWin;
+                document.getElementById('lastWin').innerText = totalSpinWin;
+
+                // Process Golden Cards -> Turn into WILDs, non-golden explode
+                winIndices.forEach(idx => {
+                    const item = gridState[idx];
+                    if (item.type === 'golden') {
+                        item.type = 'wild';
+                        item.value = 'WILD';
+                        applySymbolToCard(item.element, item);
+                        item.element.classList.remove('win-highlight');
+                    } else if (item.type !== 'wild') {
+                        item.element.classList.add('exploding');
+                        item.type = 'empty';
+                    }
+                });
+
+                await sleep(400);
+
+                // Drop Existing Cards & Refill (Cascading)
+                dropAndRefill();
+                await sleep(400);
+            }
+
+            // Finish Spin
+            if (totalSpinWin > 0) {
+                totalScore += totalSpinWin;
+                document.getElementById('totalPoints').innerText = totalScore;
+                statusMsg.innerText = `অভিনন্দন! আপনি মোট ${totalSpinWin} পয়েন্ট জিতেছেন!`;
+            } else {
+                statusMsg.innerText = 'আবার চেষ্টা করুন!';
+            }
+
+            isSpinning = false;
+            spinBtn.disabled = false;
+        }
+
+        // Check Matches (3 or more adjacent horizontally)
+        function checkMatches() {
+            let winSet = new Set();
+            for (let row = 0; row < 4; row++) {
+                for (let col = 0; col < 3; col++) {
+                    let idx1 = row * 5 + col;
+                    let idx2 = row * 5 + (col + 1);
+                    let idx3 = row * 5 + (col + 2);
+
+                    let sym1 = gridState[idx1];
+                    let sym2 = gridState[idx2];
+                    let sym3 = gridState[idx3];
+
+                    if (sym1.type === 'empty' || sym2.type === 'empty' || sym3.type === 'empty') continue;
+
+                    // Match logic considering WILD
+                    if (isMatch(sym1, sym2) && isMatch(sym2, sym3)) {
+                        winSet.add(idx1);
+                        winSet.add(idx2);
+                        winSet.add(idx3);
+                    }
+                }
+            }
+            return Array.from(winSet);
+        }
+
+        function isMatch(s1, s2) {
+            if (s1.type === 'wild' || s2.type === 'wild') return true;
+            return s1.value === s2.value;
+        }
+
+        // Drop Cards Downward and Refill Top
+        function dropAndRefill() {
+            for (let col = 0; col < 5; col++) {
+                // Collect non-empty items in column from bottom to top
+                let columnItems = [];
+                for (let row = 3; row >= 0; row--) {
+                    let idx = row * 5 + col;
+                    if (gridState[idx].type !== 'empty') {
+                        columnItems.push({ type: gridState[idx].type, value: gridState[idx].value });
+                    }
+                }
+
+                // Fill remaining spaces with new symbols
+                while (columnItems.length < 4) {
+                    columnItems.push(getRandomSymbol());
+                }
+
+                // Apply back to grid from bottom to top
+                for (let row = 3; row >= 0; row--) {
+                    let idx = row * 5 + col;
+                    let newSym = columnItems[3 - row];
+                    gridState[idx].type = newSym.type;
+                    gridState[idx].value = newSym.value;
+                    applySymbolToCard(gridState[idx].element, newSym);
+                }
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Run Grid on Load
+        initGrid();
     </script>
 </body>
 </html>
-হ
