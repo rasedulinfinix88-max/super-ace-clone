@@ -25,13 +25,45 @@
 
         h1 {
             color: #f1c40f;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-size: 24px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        /* 5x4 Grid Layout for Mobile */
+        /* Stats Dashboard */
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            background: #1e1e2f;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #333355;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .multiplier-value {
+            color: #e74c3c;
+        }
+
+        /* 5x4 Grid Layout */
         .slot-container {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -40,7 +72,7 @@
             padding: 10px;
             border-radius: 12px;
             border: 3px solid #f1c40f;
-            box-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
             width: 100%;
             max-width: 400px;
         }
@@ -56,8 +88,7 @@
             font-size: 20px;
             font-weight: bold;
             color: #e0e0e0;
-            user-select: none;
-            transition: transform 0.1s ease;
+            transition: all 0.2s ease;
         }
 
         .card.golden {
@@ -66,8 +97,17 @@
             border: 2px solid #fff;
         }
 
+        /* Winning Glow Animation */
+        .card.win {
+            border: 2px solid #2ecc71;
+            box-shadow: 0 0 12px #2ecc71;
+            transform: scale(1.05);
+            background: #27ae60;
+            color: #fff;
+        }
+
         .controls {
-            margin-top: 20px;
+            margin-top: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -94,10 +134,11 @@
             transform: scale(0.95);
         }
 
-        .score-board {
-            font-size: 16px;
-            color: #2ecc71;
+        .status-text {
+            font-size: 14px;
+            color: #f1c40f;
             font-weight: bold;
+            min-height: 20px;
         }
     </style>
 </head>
@@ -105,56 +146,105 @@
 
     <h1>SUPER ACE CLONE</h1>
 
-    <!-- 5x4 Grid Slot Machine -->
-    <div class="slot-container" id="slotGrid">
-        <!-- 20 Cards will be generated dynamically -->
+    <!-- Stats Dashboard -->
+    <div class="dashboard">
+        <div class="stat-box">
+            <div class="stat-label">মোট পয়েন্ট</div>
+            <div class="stat-value" id="score">1000</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">গুণক (Multiplier)</div>
+            <div class="stat-value multiplier-value" id="multiplier">x1</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">শেষ উইন</div>
+            <div class="stat-value" id="lastWin">0</div>
+        </div>
     </div>
+
+    <!-- 5x4 Grid -->
+    <div class="slot-container" id="slotGrid"></div>
 
     <div class="controls">
         <button class="spin-btn" onclick="spinReels()">SPIN</button>
-        <div class="score-board" id="statusText">স্পিন করতে নিচে ক্লিক করুন</div>
+        <div class="status-text" id="statusText">স্পিন করুন!</div>
     </div>
 
     <script>
-        // Super Ace Symbols List
         const symbols = ['J', 'Q', 'K', 'A', '♠', '♥', '♦', '♣'];
         const gridContainer = document.getElementById('slotGrid');
+        const scoreEl = document.getElementById('score');
+        const multiplierEl = document.getElementById('multiplier');
+        const lastWinEl = document.getElementById('lastWin');
         const statusText = document.getElementById('statusText');
 
-        // Create initial 20 cards (5 columns x 4 rows)
+        let totalScore = 1000;
+        let gridData = [];
+
         function initGrid() {
             gridContainer.innerHTML = '';
+            gridData = [];
             for (let i = 0; i < 20; i++) {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                const randomSym = symbols[Math.floor(Math.random() * symbols.length)];
+                card.innerText = randomSym;
                 gridContainer.appendChild(card);
+                gridData.push({ element: card, symbol: randomSym });
             }
         }
 
-        // Spin Functionality
         function spinReels() {
-            const cards = document.querySelectorAll('.card');
             statusText.innerText = 'স্পিন হচ্ছে...';
-            
-            // Randomize symbols with animation effect
-            cards.forEach(card => {
-                const isGolden = Math.random() < 0.15; // 15% chance for Golden Card
-                const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+            let winAmount = 0;
+
+            // Reset Win Classes
+            gridData.forEach(item => {
+                item.element.classList.remove('win', 'golden');
+                const isGolden = Math.random() < 0.15;
+                const randomSym = symbols[Math.floor(Math.random() * symbols.length)];
                 
-                card.innerText = randomSymbol;
-                
-                if (isGolden) {
-                    card.classList.add('golden');
-                } else {
-                    card.classList.remove('golden');
-                }
+                item.symbol = randomSym;
+                item.element.innerText = randomSym;
+
+                if (isGolden) item.element.classList.add('golden');
             });
 
-            statusText.innerText = 'স্পিন সম্পন্ন হয়েছে!';
+            // Winning Logic (Row Check)
+            // Checks each row for 3 or more matching adjacent symbols
+            for (let row = 0; row < 4; row++) {
+                for (let col = 0; col < 3; col++) {
+                    let idx1 = row * 5 + col;
+                    let idx2 = row * 5 + (col + 1);
+                    let idx3 = row * 5 + (col + 2);
+
+                    if (gridData[idx1].symbol === gridData[idx2].symbol && 
+                        gridData[idx2].symbol === gridData[idx3].symbol) {
+                        
+                        gridData[idx1].element.classList.add('win');
+                        gridData[idx2].element.classList.add('win');
+                        gridData[idx3].element.classList.add('win');
+
+                        winAmount += 50; // Award 50 points per match
+                    }
+                }
+            }
+
+            // Update Dashboard
+            if (winAmount > 0) {
+                totalScore += winAmount;
+                lastWinEl.innerText = '+' + winAmount;
+                multiplierEl.innerText = 'x2';
+                statusText.innerText = 'অভিনন্দন! আপনি পয়েন্ট জিতেছেন!';
+            } else {
+                lastWinEl.innerText = '0';
+                multiplierEl.innerText = 'x1';
+                statusText.innerText = 'আবার চেষ্টা করুন!';
+            }
+
+            scoreEl.innerText = totalScore;
         }
 
-        // Initialize grid on load
         initGrid();
     </script>
 </body>
